@@ -22,16 +22,20 @@ const SignUp = () => {
         body:JSON.stringify(formdata)
       })
       const data=await res.json()
-      if(data.success===false){
+      if(data.message==="user created"){
+        
         setLoading(false)
-        seterror(data.message)
-        return
+        navigate('/signin')
       }
-      setLoading(false)
-      navigate('/signin')
-    } catch (error) {
+      else{
       setLoading(false)
       seterror(data.message)
+      return
+    }
+     
+    } catch (error) {
+      setLoading(false)
+      seterror(error.message)
     }
   }
   async function handleChange(e){
@@ -57,9 +61,9 @@ const SignUp = () => {
                     <label htmlFor="name"><RiLockPasswordLine className="w-6 h-full  mr-4"/></label>
                     <input type="password" id="password" onChange={handleChange} className="w-full border-none outline-none bg-black" required autoComplete="off" placeholder="password"/>
                 </div>
-                <button className="w-full disabled:cursor-not-allowed disabled:bg-slate-600 outline-none hover:scale-105 transition-transform font-semibold duration-2000 bg-blue-700 p-3 rounded-2xl hover:opacity-95">Sign up</button>
+                <button disabled={loading} className="w-full disabled:cursor-not-allowed disabled:bg-slate-600 outline-none hover:scale-105 transition-transform font-semibold duration-2000 bg-blue-700 p-3 rounded-2xl hover:opacity-95">Sign up</button>
                 <Link to={'/signin'} className="w-full outline-none border-opacity-60 border-slate-600 border text-center hover:text-white  transition-border font-semibold duration-2000  text-blue-700  p-3 rounded-2xl hover:opacity-95">Sign in</Link>
-  
+                {error &&<p className="text-center">{error}</p>}
             </form>
         </div>
       </div>

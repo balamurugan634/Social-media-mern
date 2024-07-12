@@ -1,20 +1,23 @@
 import User from "../Models/user.model.js";
 import bcrypt from 'bcryptjs'
 import errorHandler from "../utils/error.js";
+import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv'
+dotenv.config()
 export const signUp=async(req,res,next)=>{
     try {
         const {name,email,password}=req.body;
         const mailregex= /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if(!mailregex.test(email)){
-            return res.status(400).json({error:"invalid email address"})
+            return res.status(400).json({message:"invalid email address"})
         }
         const existinguser=await User.findOne({name})
         if(existinguser){
-            return res.status(200).json({error:"user already exist"})
+            return res.status(400).json({message:"user already exist"})
         }
         const existingmail=await User.findOne({email})
         if(existingmail){
-            return res.status(200).json({error:"mail already exist"})
+            return res.status(400).json({message:"mail already exist"})
         }
         // const salt=bcrypt.genSalt(10)
         const hashedpass=bcrypt.hashSync(password,10)
@@ -26,7 +29,7 @@ export const signUp=async(req,res,next)=>{
 
         if(newuser){
             await newuser.save()
-            res.status(200).json({messge:"user created"})
+            res.status(200).json({message:"user created"})
         }
         else{
             next(errorHandler(400,"internal sever error"))
@@ -35,4 +38,28 @@ export const signUp=async(req,res,next)=>{
     } catch (err) {
         next(err)
     }
+}
+export const signIn=async (req,res,next)=>{
+    try{
+    const {email,password}=req.body;
+    const mailregex= /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if(!mailregex.test(email)){
+        return next(400,"invalid email address")
+    }
+    const validuser=await User.findOne({email:email})
+    if(!validuser){
+        return next(errorHandler(500,"mail not found"))
+    }
+    const validpass=bcrypt.compareSync(password,validuser.password);
+    if(!validpass){
+        return next(errorHandler(401,"wrong credentials"))
+    }
+    const token=jwt.sign({id:validuser._id},process.env.SECRET)
+    const {password:pass,...rest}=validuser._doc
+    res.cookie('acces_token',token,{httpOnly:true}).status(200).json(rest)
+}
+catch(error){
+    next(error)
+}
+    
 }
