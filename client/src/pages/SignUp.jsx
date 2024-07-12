@@ -48,7 +48,7 @@ const SignUp = () => {
         <XSvg className='lg:w-2/3 md:w-2/3 fill-white' />
         </div>
         <div className="flex flex-col flex-1 justify-center items-center  text-gray-300">
-            <h1 className="font-semibold text-3xl  p-3 text-center capitalize ">Join today <span className="text-4xl text-blue-500">!</span></h1>
+            <h1 className="font-semibold text-2xl  p-3 text-center capitalize ">Join today <span className="text-4xl text-blue-500">!</span></h1>
             <form onSubmit={handleSubmit} className="flex text-sm w-full flex-col gap-5 p-2 md:p-5 lg:w-[50%]">
                 <div className="flex border-opacity-60 w-full border-slate-700 border hover:cursor-pointer items-center p-2  rounded-lg ">
                     <label htmlFor="name"><FaUser className="w-6 h-full mr-4"/></label>

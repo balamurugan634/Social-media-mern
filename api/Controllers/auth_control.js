@@ -63,3 +63,36 @@ catch(error){
 }
     
 }
+export const google =async (req,res,next)=>{
+    try{
+    const {email}=req.body
+    const user=await User.findOne({email})
+    if(user){
+        const token=jwt.sign({id:user._id},process.env.SECRET)
+        const {password:pass,...rest}=user._doc
+        return res.cookie('access_token',token,{httpOnly:true}).status(200).json(rest)     
+    }
+    else{
+        const generate_pass=Math.random().toString(36).slice(-8)+Math.random().toString(36).slice(-8)
+        const hashedpass=bcrypt.hashSync(generate_pass,10)
+        const newuser=await User({
+            name:req.body.name,
+            email,
+            password:hashedpass,
+            profileimg:req.body.photo
+        })
+        try{
+            await newuser.save()
+            const token=jwt.sign({id:newuser._id},process.env.SECRET)
+            const {password:pass,...rest}=newuser._doc
+            res.cookie('access_token',token,{httpOnly:true}).status(200).json(rest)
+        }
+        catch(error){
+            next(error)
+        }
+    }
+    }
+    catch(error){
+        next(error)
+    }
+}
