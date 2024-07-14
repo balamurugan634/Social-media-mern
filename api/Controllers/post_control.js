@@ -1,5 +1,6 @@
 import Post from "../Models/post.model.js"
 import User from "../Models/user.model.js"
+import errorHandler from "../utils/error.js"
 
 export const createpost =async (req,res,next)=>{
     try{
@@ -23,7 +24,14 @@ export const createpost =async (req,res,next)=>{
 }
 export const getAllpost=async (req,res,next)=>{
     try {
-        const allpost=await Post.find().sort({createdAt:-1})
+        const allpost=await Post.find().sort({createdAt:-1}).populate({
+            path: "user",
+            select: "-password",
+        })
+        .populate({
+            path: "comments.user",
+            select: "-password",
+        });
         if(allpost.length ===0){
             res.status(200).json([])
         }
@@ -31,4 +39,16 @@ export const getAllpost=async (req,res,next)=>{
     } catch (error) {
         next(error)
     }
+}
+export const createcomment=async (req,res,next)=>{
+    const post_id=req.params.id
+    const text=req.body.text
+    const user=req.body.user.id
+    if(!text) return next(errorHandler(400,"comment cannot be empty"))
+    const post=await Post.findById(post_id)
+    if(!post) return next(errorHandler(400,"post not found"))
+    const comment={text:text,user:user}
+    post.comments.push(comment)
+    await post.save()
+    res.status(200).json(post)
 }
