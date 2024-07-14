@@ -52,3 +52,29 @@ export const createcomment=async (req,res,next)=>{
     await post.save()
     res.status(200).json(post)
 }
+
+export const likeandunlike =async(req,res,next)=>{
+    const post_id=req.params.id
+    const user=req.body.user.id
+
+    const post =await Post.findById(post_id)
+
+    if(!post) return next(errorHandler(400,"post not found"))
+
+    const likedbyuser=post.likes.includes(user)
+
+    if(likedbyuser){
+        await Post.updateOne({_id:post_id},{$pull:{likes:user}})
+        await User.updateOne({_id:user},{$pull:{likedposts:post_id}})
+
+        const updatedlikes=post.likes.filter((id)=>id.toString() !== user.toString())
+        res.status(200).json(updatedlikes)
+    }
+    else{
+        post.likes.push(user)
+        await post.save()
+        await User.updateOne({_id:user},{$push:{likedposts:post_id}})
+        const updatedlikes=post.likes
+        res.status(200).json(updatedlikes)
+    }
+}
