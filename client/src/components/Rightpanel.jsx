@@ -2,7 +2,7 @@ import React from 'react'
 
 const Rightpanel = () => {
   return (
-    <div className='hidden lg:flex column float-left  bg-white'>
+    <div className='hidden lg:flex h-full w-1/4 bg-green-600'>
       Right
     </div>
   )

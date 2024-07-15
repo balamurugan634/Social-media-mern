@@ -31,16 +31,16 @@ const Navbar = () => {
     }
   ]
   return (
-    <div className="bg-red-500 column float-left">
-      <div className="w-full h-full">
-        <Link to={"/"} className="flex justify-center md:justify-start">
+    <div className="text-white h-full w-1/4 ">
+      <div className="w-full h-full flex flex-col items-center pt-1">
+        <Link to={"/"} className="my-3 w-full sm:w-1/2  flex justify-center md:justify-start rounded-full pl-1">
           <XSvg className="px-2 w-12 h-12 rounded-full fill-white hover:bg-stone-900" />
         </Link>
-        <ul className="flex flex-col gap-3 mt-4 text-white">
+        <ul className="w-full flex flex-col items-center gap-3 md:gap-6 justify-center md:justify-end  ">
           {content.map((item)=>(
-              <li className="flex justify-center md:justify-start">
-              <Link className="flex gap-3 items-center hover:bg-stone-900 transition-all rounded-full duration-300 py-2 pl-2 pr-4 max-w-fit cursor-pointer">
-                <item.icon className="w-8 h-8" />
+              <li className=" w-full sm:w-5/6 p-2 hover:bg-stone-950 rounded-full flex items-center justify-center">
+              <Link className="w-full flex items-center gap-2 justify-center md:justify-start ">
+                <item.icon className="w-8 h-8 " />
                 <span className="hidden md:block text-lg">{item.title}</span>
               </Link>
             </li>
