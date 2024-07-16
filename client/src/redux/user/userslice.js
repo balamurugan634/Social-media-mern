@@ -20,9 +20,22 @@ const userSlice=createSlice(
             Signinfailure:(state,action)=>{
                 state.loading=false
                 state.error=action.payload
+            },
+            uploadstart:(state)=>{
+                state.loading=true
+                state.error=null
+            },
+            uploadsuccess:(state,action)=>{
+                // state.currentuser=action.payload;
+                state.loading=false;
+                state.error=null;
+            },
+            uploadfailure:(state,action)=>{
+                state.loading=false
+                state.error=action.payload
             }
         }
     }
 )
-export const {Signinfailure,Signinstart,Signinsuccess}=userSlice.actions;
+export const {Signinfailure,Signinstart,Signinsuccess,uploadfailure,uploadstart,uploadsuccess}=userSlice.actions;
 export default userSlice.reducer

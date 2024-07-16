@@ -5,6 +5,9 @@ import SignUp from './pages/SignUp'
 import Home from './pages/Home'
 import SignIn from './pages/SignIn'
 import Privateroute from './components/Privateroute'
+import Navbar from './components/Navbar'
+import Center from './components/Center'
+import Rightpanel from './components/Rightpanel'
 // import { IconContext } from 'react-icons/lib'
 function App() {
 
@@ -19,6 +22,7 @@ function App() {
     <Route element={<Privateroute/>}>
       {/* all pvt routess */}
       <Route path='/' element={<Home/>}/>
+      
 
     </Route>
     </Routes>

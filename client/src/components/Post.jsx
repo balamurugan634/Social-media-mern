@@ -11,7 +11,6 @@ const Post = () => {
         <img
           src="https://wallpapers.com/images/hd/moon-retro-vector-art-7op8fanjrtajdzp0.jpg"
           alt=""
-          srcset=""
           className="rounded-full w-10 h-10"
           />
         <h3 className="font-semibold">username</h3>
