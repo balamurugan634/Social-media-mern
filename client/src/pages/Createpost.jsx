@@ -88,7 +88,7 @@ const Createpost = () => {
         console.log(data.message)
       }
       dispatch(uploadsuccess())
-      navigate('/')
+      
     }
     catch(error){
       dispatch(uploadfailure(data.message))

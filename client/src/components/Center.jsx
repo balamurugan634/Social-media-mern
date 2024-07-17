@@ -35,7 +35,7 @@ const Center = () => {
             setforyoupage(true);
             setfollowingpage(false);
             setpostpage(false);
-            searchpage(false)
+            setsearchpage(false)
             setnotificationpage(false)
             setprofilepage(false)
             setsearchpage(false)
